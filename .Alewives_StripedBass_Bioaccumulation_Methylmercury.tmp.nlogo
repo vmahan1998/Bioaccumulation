@@ -279,7 +279,7 @@ max-alewife-speed
 max-alewife-speed
 0
 10
-4.1
+4.0
 .1
 1
 patches/tick
@@ -294,7 +294,7 @@ min-alewife-speed
 min-alewife-speed
 0
 3
-1.1
+1.0
 .1
 1
 patches/tick
@@ -459,7 +459,7 @@ prey-flee-energy
 prey-flee-energy
 0
 10
-5.0
+4.0
 1
 1
 Units of Energy
@@ -693,7 +693,7 @@ trophic-transfer-rate
 trophic-transfer-rate
 0
 1
-0.1
+0.121
 0.001
 1
 mg/kg
@@ -738,7 +738,7 @@ uptake-Constant
 uptake-Constant
 0
 1
-0.001
+0.006
 0.0001
 1
 mg/kg/tick
