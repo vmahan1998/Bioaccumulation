@@ -1,0 +1,32 @@
+to create-salinity
+  set max-salinity 32.9
+  set min-salinity 11.58
+  
+;  ; Create the water region (optional step, you can load your shapefile here)
+;  ask patches with [pycor >= 0 and pycor <= max-pycor and patch-terrain != "water"] [
+;    set patch-terrain "water"
+;  ]
+  
+  ; Find the highest and lowest water patches
+  let highest-patch max-one-of patches with [patch-terrain = "water"] [pycor]
+  let lowest-patch min-one-of patches with [patch-terrain = "water"] [pycor]
+  
+  ; Calculate the salinity value for each patch in the water region
+  ask patches with [patch-terrain = "water"] [
+    let salinity-gradient (pycor - [pycor] of lowest-patch) / ([pycor] of highest-patch - [pycor] of lowest-patch)
+    set salinity min-salinity + (salinity-gradient * (max-salinity - min-salinity))
+  ]
+  
+  ; Set color according to salinity value (you can use color scale here)
+  ask patches with [patch-terrain = "water"] [
+    set pcolor scale-color blue salinity min-salinity max-salinity
+  ]
+  
+  ; Optional: Display the maximum and minimum salinity values as labels
+  ask patches with [pycor = max-pycor] [
+    set plabel max-salinity
+  ]
+  ask patches with [pycor = min-pycor] [
+    set plabel min-salinity
+  ]
+end

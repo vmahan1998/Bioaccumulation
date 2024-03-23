@@ -1,0 +1,134 @@
+to uptake-methylmercury
+  if day >= migration-start-day [
+    ; Calculate the amount to uptake based on agent size
+    let uptake_amount uptake-constant * [size] of self * methylmercury
+    
+    ; Update b-methylmercury in the agent, ensuring it's never negative
+    ifelse (b-methylmercury + uptake_amount) < 0 [
+      set b-methylmercury 0
+    ] [
+      set b-methylmercury (b-methylmercury + uptake_amount)
+    ]
+    
+    ; Subtract the uptaken amount from the patch attribute, ensuring it's never negative
+    ifelse (methylmercury - uptake_amount) < 0 [
+      set methylmercury 0
+    ] [
+      set methylmercury (methylmercury - uptake_amount)
+    ]
+  ]
+end
+
+to eliminate-methylmercury ; every time step
+  if day >= migration-start-day [
+    ; Calculate the amount to eliminate based on agent size
+    let elimination_amount elimination-constant * [size] of self * methylmercury
+    
+    ; Update b-methylmercury in the agent, ensuring it's never negative
+    ifelse (b-methylmercury - elimination_amount) < 0 [
+      set b-methylmercury 0
+    ] [
+      set b-methylmercury (b-methylmercury - elimination_amount)
+    ]
+  ]
+end
+
+to count-exposure-duration ;; every time step
+   if day >= migration-start-day and methylmercury > 0 [
+    set exposure-duration  exposure-duration + 1
+]
+end
+
+to count-mean-exposure-duration-prey
+  ;print (word "START count-mean-b-methylmercury-prey")  
+  ifelse any? alewives with [exposure-duration > 0] [
+    set mean-exposure-duration-prey mean [exposure-duration] of alewives
+    ;;output for spawning encounters
+  print (word "Cumulative Mean Exposure Duration in River Herring Population: " mean-exposure-duration-prey)
+  ;print (word "END count-mean-spawning-encounters"))
+  ] [
+    set mean-exposure-duration-prey 0
+    print (word "Cumulative Mean Exposure Duration in River Herring Population: " mean-exposure-duration-prey)
+  ]
+end
+
+to count-mean-exposure-duration-predator
+   ;print (word "START count-mean-b-methylmercury-prey")  
+  ifelse any? stripedbass with [exposure-duration > 0] [
+    set mean-exposure-duration-predator mean [exposure-duration] of stripedbass
+    ;;output for spawning encounters
+  print (word "Cumulative Mean Exposure Duration in Striped Bass Population: " mean-exposure-duration-predator)
+  ;print (word "END count-mean-spawning-encounters"))
+  ] [
+    set mean-exposure-duration-predator 0
+    print (word "Cumulative Mean Exposure Duration in Striped Bass Population: " mean-exposure-duration-predator)
+  ]
+end
+
+to count-mean-b-methylmercury-prey
+  ;print (word "START count-mean-b-methylmercury-prey")  
+  ifelse any? alewives with [b-methylmercury > 0] [
+    set mean-b-methylmercury-prey mean [b-methylmercury] of alewives
+    ;;output for spawning encounters
+    print (word "Average b-methylmercury in River Herring: " mean-b-methylmercury-prey)
+  ;print (word "END count-mean-spawning-encounters")n)
+  ] [
+    set mean-b-methylmercury-prey 0
+    print (word "Average b-methylmercury in River Herring: " mean-b-methylmercury-prey)
+  ]
+end
+
+to count-mean-b-methylmercury-predator
+   ;print (word "START count-mean-b-methylmercury-prey")  
+  ifelse any? stripedbass with [b-methylmercury > 0] [
+    set mean-b-methylmercury-predator mean [b-methylmercury] of stripedbass
+    ;;output for spawning encounters
+  print (word "Average b-methylmercury in Striped Bass: " mean-b-methylmercury-predator)
+  ;print (word "END count-mean-spawning-encounters")n)
+  ] [
+    set mean-b-methylmercury-predator 0
+    print (word "Average b-methylmercury in Striped Bass: " mean-b-methylmercury-predator)
+  ]
+end
+
+to count-mean-daily-bioaccumulation-stripedbass ;;bioaccumulation per day
+  
+  ifelse any? stripedbass with [b-methylmercury > 0] [
+  let population stripedbass
+
+  ; Calculate the mean daily bioaccumulation for the population
+  set mean-daily-bioaccumulation-stripedbass mean [b-methylmercury] of population
+
+  ; Normalize by the number of ticks in a day
+  let ticks-per-day 960
+  set mean-daily-bioaccumulation-stripedbass mean-daily-bioaccumulation-stripedbass / ticks-per-day
+  
+  ; Print the mean bioaccumulation
+  print (word "Mean Daily Bioaccumulation in Predator: " mean-daily-bioaccumulation-stripedbass)
+    ] [
+    set mean-daily-bioaccumulation-stripedbass 0
+    print (word "Mean Daily Bioaccumulation in Predator: " mean-daily-bioaccumulation-stripedbass)
+  ]
+    
+end
+
+to count-mean-daily-bioaccumulation-alewives
+  
+  ifelse any? alewives with [b-methylmercury > 0] [
+    
+  let population alewives
+
+  ; Calculate the mean daily bioaccumulation for the population
+  set mean-daily-bioaccumulation-alewives mean [b-methylmercury] of population
+
+  ; Normalize by the number of ticks in a day
+  let ticks-per-day 960
+  set mean-daily-bioaccumulation-alewives mean-daily-bioaccumulation-alewives / ticks-per-day
+
+  ; Print the mean bioaccumulation
+  print (word "Mean Daily Bioaccumulation in Prey: " mean-daily-bioaccumulation-alewives)
+     ] [
+    set mean-daily-bioaccumulation-alewives 0
+    print (word "Mean Daily Bioaccumulation in Prey: " mean-daily-bioaccumulation-alewives)
+  ]
+end

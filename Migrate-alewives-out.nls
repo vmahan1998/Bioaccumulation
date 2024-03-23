@@ -1,0 +1,149 @@
+to migrate-alewives-out
+  if age = "adult" and patch-terrain = "water"[
+    
+    if ycor < 88 [
+    move-out-squibnocket
+    ]
+    
+    if ycor >= 88 and ycor < 91 [
+      move-out-culvert
+    ]
+    
+    if ycor >= 91 and ycor < 157 [
+      migrate-out-herringrun
+    ]
+    
+    if ycor >= 157 and ycor < 190 [
+      migrate-out-estuary
+    ]
+    
+    if ycor >= 190 and ycor < 200 [
+      return-home
+    ]
+  ]
+end
+
+;to migrate-alewives-out
+;  return-home
+;;  if ycor <= 50 [
+;;  uphill salinity
+;;  ifelse alewives-moved? [
+;;  ; Do something if alewives have moved
+;;  ] [
+;;    let neighbor-patches neighbors with [patch-terrain = "water"]
+;;    let target-patches neighbors with [spawning-habitat-quality < [spawning-habitat-quality] of myself]
+;;    if any? target-patches [
+;;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;;      ]
+;;      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;;    ]
+;;  ]
+;;;    if ycor <= 50 [
+;;;    move-out-herringrun
+;;;  ]
+;;;  
+;;    if ycor > 50 [
+;;    find-exit-herringrun
+;;  ]
+;;  
+;;  
+;;;  
+;;    if ycor > 70 [
+;;    find-entrance-herringrun
+;;  ]
+;;  
+;; if ycor < 200 [
+;;    move-into-estuary
+;;    return-to-sea
+;;  ]
+;end
+
+to return-home
+  let sea-patch [home-patch] of self
+  
+  ; Check if the fish is already at the home patch
+  if patch-here = sea-patch [
+    ; If already at home, stop moving
+    stop
+  ] 
+  if patch-here != sea-patch [
+    ; Find the closest water patch
+    let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance sea-patch]
+  
+    ; If a closest water patch is found, move to it
+    if closest-water-patch != nobody [
+      ; Calculate the heading towards the home patch
+      let target-heading towards sea-patch
+    
+      ; Set the heading to move towards home
+      set heading target-heading
+    
+      ; Move forward
+      move-to closest-water-patch
+    ]
+  ]
+end
+
+to move-out-squibnocket
+  ; Initialize a variable to track if the agent has reached its home
+  let exit-patch patch 82 89; Store the entrance to estuary patch
+  let target-heading towards exit-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance exit-patch]
+  
+  ; If a closest water patch is found, move to it
+  if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  
+  ; Move forward
+  move-to closest-water-patch
+  ]
+end
+
+ to move-out-culvert
+  ; Initialize a variable to track if the agent has reached its home
+  let exit-patch patch 85 96; Store the entrance to estuary patch
+  let target-heading towards exit-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance exit-patch]
+  
+  ; If a closest water patch is found, move to it
+  if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  
+  ; Move forward
+  move-to closest-water-patch
+  ]
+end
+
+to migrate-out-herringrun
+  ; Initialize a variable to track if the agent has reached its home
+  let exit-patch patch 149 160; Store the entrance to estuary patch
+  let target-heading towards exit-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance exit-patch]
+  
+  ; If a closest water patch is found, move to it
+  if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  
+  ; Move forward
+  move-to closest-water-patch
+  ]
+end
+  
+to migrate-out-estuary
+  ; Initialize a variable to track if the agent has reached its home
+  let exit-patch patch 149 191; Store the entrance to estuary patch
+  let target-heading towards exit-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance exit-patch]
+  
+  ; If a closest water patch is found, move to it
+  if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  
+  ; Move forward
+  move-to closest-water-patch
+  ]
+end

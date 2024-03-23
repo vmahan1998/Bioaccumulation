@@ -1,0 +1,23 @@
+to eat ;; predator procedure
+  if daytime-prey-eaten < limit-daily-prey-allowance and patchtype = "channel"[
+    let nearby (turtle-set alewives-here alewives-on neighbors)
+    if any? nearby [ ;; if there is a catch, stop to eat the fish (cannot eat again until burst recharges)
+      let prey-b-methylmercury 0
+      ask one-of nearby [
+        set prey-b-methylmercury [b-methylmercury] of one-of nearby  ; Get the b-methylmercury attribute from the prey
+        print (word "Methylmercury in Prey: " prey-b-methylmercury)
+        set trophic-transfer-amount trophic-transfer-rate * prey-b-methylmercury ; Calculate trophic transfer from prey to predator     
+        ;; Print the trophic transfer amount
+        print (word "Trophic transfer amount: " trophic-transfer-amount)
+        die  ;alewife eaten
+      ]
+      set b-methylmercury b-methylmercury + trophic-transfer-amount ; Update b-methylmercury in the predator agent
+      ;; Print the trophic transfer amount
+      print (word "Methylmercury in Predator: " b-methylmercury)
+      set numAlewivesEaten numAlewivesEaten + 1
+      set daytime-prey-eaten daytime-prey-eaten + 1
+      set yearly-prey-eaten yearly-prey-eaten + 1
+      set prey-eaten-in-patch prey-eaten-in-patch + 1
+    ]
+  ]
+end

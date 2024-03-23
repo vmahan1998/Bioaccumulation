@@ -1,0 +1,12 @@
+to move-adults-based-on-month1
+
+  ;Code locks in the better patches and can't ever get out of them. 
+  if (night? = true) and (monthnum < 3 and monthnum < 8)[
+  set better-patches neighbors with [patchtype = [patchtype] of myself and spawning-habitat-quality > [spawning-habitat-quality] of myself]
+  if any? better-patches [ask better-patches [set pcolor yellow]]
+    ifelse any? better-patches 
+    [move-to one-of better-patches]
+    [move-to one-of neighbors with [patchtype = [patchtype] of myself]]
+  ]
+
+end

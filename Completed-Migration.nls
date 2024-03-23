@@ -1,0 +1,8 @@
+to disappear-if-reached-spawning-grounds
+  ; Check if the agent has successfully reached spawning grounds
+    if patchtype = "pond" [
+       set successfull-migration-to-spawning-ground successfull-migration-to-spawning-ground + 1 ; Increase the count of alewives successfully reaching spawning grounds
+        ; Die or disappear from the model
+        die
+      ]
+end

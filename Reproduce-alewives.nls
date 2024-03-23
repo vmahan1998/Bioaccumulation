@@ -1,0 +1,18 @@
+to reproduce-alewives [male female]
+  let numOffspring random 101 ; Generate a random number between 0 and 100 (inclusive)
+
+  repeat numOffspring [
+    hatch-alewives 1 [
+      set color green ; Set the color of the larvae
+      set age "larvae" ;set age
+      ; Randomly assign gender
+   ifelse random-float 1 < 0.5 [
+      set sex "male"
+      set numMales numMales + 1
+    ] [
+      set sex "female"
+      set numFemales numFemales + 1
+    ]
+    ]
+  ]
+end

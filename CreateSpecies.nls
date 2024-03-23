@@ -1,0 +1,60 @@
+
+to setup-stripedbass
+  create-stripedbass initial_stripedbass ; create striped bass
+  [
+    let target-patch one-of patches with [patchtype = "channel"]
+    if target-patch != nobody [
+      move-to target-patch
+    ]
+    set size predator-size ;set size of striped bass
+    set color yellow ;set color of bass
+    set age "adult" ;set age to adult
+    set speed 0.2
+    set daytime-prey-eaten 0; initialize prey eaten count
+    set yearly-prey-eaten 0
+    set burst-energy predator-burst-energy
+    set time-until-rested 0
+    set exposure-duration 0
+    set b-methylmercury 0
+    ;;assign gender to fish
+    ifelse random-float 1 < 0.65 [
+      set sex "male"
+      set numMales numMales + 1
+    ] [
+      set sex "female"
+      set numFemales numFemales + 1
+    ]
+  ]
+end
+
+to setup-alewives
+  create-alewives initial_alewives ; create alewives
+    [
+    let target-patch one-of patches with [patchtype = "estuary"]
+    if target-patch != nobody [
+      move-to target-patch
+    ]
+      set size prey-size ;set size of alewives
+      set color grey ;set color of alewives
+      set daytime-spawning-encounters 0
+      set time-since-spawning-encounters 0
+      set spawning-encounters 0; 
+      set upstream-migration-time 0;
+      set exposure-duration 0
+      set b-methylmercury initial-b-methylmercury; (mg) based on weight of 2.53±0.16g and concentration of 0.02565 mg/kg
+      set home-patch patch-here ; Record their home patch
+      set age "adult"
+      set speed 0.5
+      set flee-energy prey-flee-energy
+      set time-until-rested 0
+      set fleeing? false
+      ; Randomly assign gender
+      ifelse random-float 1 < 0.5 [
+        set sex "male"
+        set numMales numMales + 1
+      ] [
+        set sex "female"
+        set numFemales numFemales + 1
+      ]
+  ]
+end

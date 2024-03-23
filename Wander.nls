@@ -1,0 +1,15 @@
+to wander ;; only predators use
+  if monthnum <= 4 or monthnum >= migration-end-month and day <= migration-start-day[
+  let neighbor-patches neighbors with [patchtype = "channel"] ;striped bass wait in herring run until alewife in vision
+  rt (random 30) - 15
+  if any? neighbor-patches
+  [move-to one-of neighbor-patches] 
+  ]
+  if monthnum >= 4 or monthnum < migration-end-month and day > migration-start-day [
+  let neighbor-patches neighbors with [patchtype = "channel" or patchtype = "pond"] ;striped bass move around system hunting alewives freely
+  rt (random 30) - 15
+  if any? neighbor-patches
+  [move-to one-of neighbor-patches] 
+  ]
+end
+

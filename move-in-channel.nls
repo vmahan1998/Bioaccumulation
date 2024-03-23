@@ -1,0 +1,67 @@
+to-report min-pxcor-of-water-channel
+  let center-y [pycor] of patch-here
+  let candidate-patches patches with [patch-terrain = "water" and pycor = center-y]
+  if any? candidate-patches [
+    report min [pxcor] of candidate-patches
+  ]
+  report mean [pxcor] of patches with [patchtype = "pond"]  ; If no suitable patches found, return the minimum x-coordinate of the world
+end
+
+to-report max-pxcor-of-water-channel
+  let center-y [pycor] of patch-here
+  let candidate-patches patches with [patch-terrain = "water" and pycor = center-y]
+  if any? candidate-patches [
+    report max [pxcor] of candidate-patches
+  ]
+  report mean [pxcor] of patches with [patchtype = "pond"]  ; If no suitable patches found, return the minimum x-coordinate of the world
+end
+
+to-report min-pxcor-of-channel
+  let center-y [pycor] of patch-here
+  let candidate-patches patches with [patchtype = "channel" and pycor = center-y]
+  if any? candidate-patches [
+    report min [pxcor] of candidate-patches
+  ]
+  report mean [pxcor] of patches with [patchtype = "channel"] ; If no suitable patches found, return the minimum x-coordinate of the world
+end
+
+to-report max-pxcor-of-channel
+  let center-y [pycor] of patch-here
+  let candidate-patches patches with [patchtype = "channel" and pycor = center-y]
+  if any? candidate-patches [
+    report max [pxcor] of candidate-patches
+  ]
+  report mean [pxcor] of patches with [patchtype = "channel"]  ; If no suitable patches found, return the minimum x-coordinate of the world
+end
+
+to-report min-pxcor-of-sea
+  let center-y [pycor] of patch-here
+  let candidate-patches patches with [patchtype = "sea" and pycor = center-y]
+  if any? candidate-patches [
+    report min [pxcor] of candidate-patches
+  ]
+  report mean [pxcor] of patches with [patchtype = "channel"] ; If no suitable patches found, return the minimum x-coordinate of the world
+end
+
+to-report max-pxcor-of-sea
+  let center-y [pycor] of patch-here
+  let candidate-patches patches with [patchtype = "sea" and pycor = center-y]
+  if any? candidate-patches [
+    report max [pxcor] of candidate-patches
+  ]
+  report mean [pxcor] of patches with [patchtype = "channel"]  ; If no suitable patches found, return the minimum x-coordinate of the world
+end
+
+to move-through-channel
+  if patch-terrain = "water" [
+    let channel-patches patches with [patch-terrain = "water"]
+  
+  if any? channel-patches [
+    let center-x (min-pxcor-of-water-channel + max-pxcor-of-water-channel) / 2
+    let center-y min [pycor] of channel-patches
+    let target-heading atan (center-x - xcor) (center-y - ycor)
+    set heading target-heading
+    fd 1
+  ]
+  ]
+end

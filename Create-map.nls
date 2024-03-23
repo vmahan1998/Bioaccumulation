@@ -1,0 +1,52 @@
+to setup-GIS
+  let channel-half-width channel-width / 2
+  let channel-half-length channel-length / 2
+  let center-x 50
+  let center-y 250
+  let channel-x center-x
+  let channel-top center-y + channel-half-length
+  let channel-bottom center-y - channel-half-length
+  
+  resize-world 0 100 0 500
+  set-patch-size 1
+  
+  ask patches [
+    ;let circle1? abs(pxcor - center-x) < 25 and abs(pycor - pond-y-top) < 25
+    ;let circle2? abs(pxcor - center-x) < 25 and abs(pycor - pond-y-bottom) < 25
+    let circle1? abs(pxcor - center-x) < 25 and pycor > channel-top and pycor < channel-top + 50
+    let circle2? abs(pxcor - center-x) < 25 and pycor > channel-bottom - 50 and pycor < channel-bottom
+    ;let circle1? pycor > channel-top - 50 and pycor < channel-top
+    ;let circle2? pycor > channel-bottom and pycor < channel-bottom + 50
+    let channel? pxcor >= (center-x - channel-half-width) and pxcor <= (center-x + channel-half-width) and pycor >= (center-y - channel-half-length) and pycor <= (center-y + channel-half-length)
+    set pcolor green
+    set patch-terrain "land"
+    
+    if circle1? [
+      set pcolor blue
+      set patchtype "estuary"
+      set patch-terrain "water"
+      set methylmercury 0
+      set spawning-habitat-quality random-float 0.2 ; HSI values between 0-0.2
+    ]
+    
+    if circle2? [
+      set pcolor blue
+      set patchtype "pond"
+      set patch-terrain "water"
+      set methylmercury 0
+      set spawning-habitat-quality random-float 0.6 + 0.4 ; HSI values between 0.4-1.0
+      ; Additional settings for circles if needed
+    ]
+    
+    if channel? [
+      set pcolor blue  ; Color of the channel
+      set patchtype "channel"
+      set patch-terrain "water"
+      set prey-eaten-in-patch 0
+      set spawning-events-in-patch 0
+      set methylmercury channel-contamination
+      set spawning-habitat-quality random-float 0.3 + 0.2 ; HSI values between 0.4-1.0
+      ; Additional settings for channel if needed
+    ]
+  ]
+end

@@ -1,0 +1,48 @@
+to stripedbass-movement-by-month
+;  ifelse monthnum = 5 or monthnum = 6 and night? = true [
+;    ; bass move into herring run during the day
+;    ; migration movement for overwintering juvenile and migrating adults
+;    ; move to nearest neighbor with higher HSI and with patchtype = myself
+;    hunt-prey-during-migration
+;  ] 
+;  [
+    ; Move to one of the neighboring patches with patchtype "squibnocket" or "herringrun"
+    ;;THIS MIGHT BE THE ISSUE. THEY GET STUCK BECAUSE THEY DON'T HAVE NEIGHBORS THAT MATCH THE CRITERIA
+    let target-patches neighbors with [patchtype = "squibnocket" or patchtype = "herringrun"] 
+    if any? target-patches [
+      move-to one-of target-patches
+    ]
+ ; ]
+end
+
+to hunt-prey-during-migration
+;  rt (random 30) - 15
+  let neighbor-patches neighbors with [patch-terrain = "water"]
+;;  move-to one-of neighbor-patches with [patchtype  = "herringrun" or pycor > [pycor] of myself]
+;  
+;  ;NEED TO COME UP WITH A WAY TO REMOVE THE HARD-CODED Y-COR
+;if ycor <= 95 [
+;    if ycor <= 95 [
+;    let neighbor-patches neighbors with [patch-terrain = "water"]
+;    let target-xcor 90
+;    let target-ycor 95
+;    move-to one-of neighbor-patches with [patchtype  = "herringrun"]
+;    if neighbor-patches = 0 [move-to one-of neighbors with [patchtype = "squibnocket"] ; Move forward towards the target point (herring run)
+;      ]
+;    ; Check if the inputs to atan are not both zero
+;    ifelse (target-xcor - xcor) != 0 or (target-ycor - ycor) != 0 [
+;      let target-heading atan (target-xcor - xcor) (target-ycor - ycor)
+;      set heading target-heading  ; Turn the turtle to face the target point
+;    ] [
+;      ; If both inputs are zero, don't change heading
+;    ]
+;    
+;      ;if patch-terrain != "land" [fd 1] ; Move forward towards the target point (herring run)
+;  ]
+;  ]
+;  let target-patches neighbor-patches with [patchtype = "herringrun" or pycor > [pycor] of myself] 
+;    if any? target-patches [
+;      move-to one-of target-patches
+;  ]
+;  
+end

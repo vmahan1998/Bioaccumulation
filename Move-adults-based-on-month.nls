@@ -1,0 +1,190 @@
+to move-adults-based-on-month
+  ;;;adult alewife migratory pattern
+    if day >= migration-start-day and monthnum < migration-end-month and spawning-encounters < limit-alewife-spawning-encounters;alewives in Martha's Vineyard migrate from late April-July
+  ;migration movement for overwintering juvenile and migrating adults
+  ;move to nearest neighbor with higherer HSI and with patchtype = myself
+  [   
+    let neighbor-patches neighbors with [patch-terrain = "water"]
+    let target-patches neighbors with [patchtype = "pond" or patchtype = "estuary"]
+    ifelse any? target-patches [
+      move-to one-of target-patches ; Move to a patch with higher spawning quality
+    ] [
+      ifelse any? neighbor-patches [
+        move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+      ] [
+      ]
+    ]
+    
+  ] ; if no patches exist 
+  
+  ;; uncomment if alewives migrate in March
+;   if night? = true and monthnum = 3 and random-float 1 <= 0.02; march 05%
+;  ;migration movement for overwintering juvenile and migrating adults
+;  [migrate-alewives-in
+;  ifelse alewives-moved? [
+;  ; Do something if alewives have moved
+;  ] [
+;    let neighbor-patches neighbors with [patchtype = "channel" or patch-terrain = "water"]
+;    let target-patches neighbors with [spawning-habitat-quality > [spawning-habitat-quality] of myself]
+;    if any? target-patches [
+;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;      ]
+;      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;    ]
+; ]
+  
+;   if night? = true and monthnum = 4 and random-float 1 <= 0.02; april 20% chance of migration
+;  ;migration movement for overwintering juvenile and migrating adults
+;  [migrate-alewives-in
+;  ifelse alewives-moved? [
+;  ; Do something if alewives have moved
+;  ] [
+;    let neighbor-patches neighbors with [patchtype = "channel" or patch-terrain = "water"]
+;    let target-patches neighbors with [spawning-habitat-quality > [spawning-habitat-quality] of myself]
+;   ifelse any? target-patches [
+;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;    ] [
+;      ifelse any? neighbor-patches [
+;        move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;      ] [
+;      ]
+;    ]
+;    ]
+; ]
+  
+   if day >= migration-start-day and monthnum < migration-end-month and random-float 1 <= 0.5 and spawning-encounters < limit-alewife-spawning-encounters; May & June 50% Regular Conditions
+  ;migration movement for overwintering juvenile and migrating adults
+  [migrate-alewives-in
+  ifelse alewives-moved? [
+  ; Do something if alewives have moved
+  ] [
+    let neighbor-patches neighbors with [patch-terrain = "water"]
+    let target-patches neighbors with [patchtype = "channel" or patch-terrain = "water"]
+    ifelse any? target-patches [
+      move-to one-of target-patches ; Move to a patch with higher spawning quality
+    ] [
+      ifelse any? neighbor-patches [
+        move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+      ] [
+      ]
+    ]
+    ]
+ ]
+  
+  if day >= migration-start-day and monthnum < migration-end-month and spawning-encounters < limit-alewife-spawning-encounters; May & June 100% for Spring Tide
+  ;migration movement for overwintering juvenile and migrating adults
+  [migrate-alewives-in
+  ifelse alewives-moved? [
+  ; Do something if alewives have moved
+  ] [
+    let neighbor-patches neighbors with [patch-terrain = "water"]
+    let target-patches neighbors with [patchtype = "channel" or patch-terrain = "water"]
+    if any? target-patches [
+      move-to one-of target-patches ; Move to a patch with higher spawning quality
+      ]
+      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+    ]
+ ]
+  
+;  if night? = true and spawning-encounters = limit-alewife-spawning-encounters [
+;   migrate-alewives-out
+;  ] ;migrate back to sea if done spawning nighttime movement
+;  
+;  if night? = false and spawning-encounters = limit-alewife-spawning-encounters [
+;    let neighbor-patches neighbors with [patch-terrain = "water"]
+;    let target-patches neighbors with [patchtype = "sea"]
+;    ifelse any? target-patches [
+;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;    ] [
+;      ifelse any? neighbor-patches [
+;        move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;      ] [
+;      ]
+;    ]
+;  ] ;migrate back to sea if done spawning daytime movement
+;  
+;  ;;;Adult alewife outward-migratory pattern
+;  if night? = true and monthnum = migration-end-month and spawning-encounters < limit-alewife-spawning-encounters;
+;  [migrate-alewives-out
+;;    ifelse alewives-moved? [
+;;  ; Do something if alewives have moved
+;;  ] [
+;;    let neighbor-patches neighbors with [patchtype = "sea" or patch-terrain = "water"]
+;;    let target-patches neighbors with [spawning-habitat-quality < [spawning-habitat-quality] of myself]
+;;    if any? target-patches [
+;;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;;      ]
+;;      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;;    ]
+; ]
+  
+  if monthnum = migration-end-month and spawning-encounters < limit-alewife-spawning-encounters;
+    [   
+    let neighbor-patches neighbors with [patch-terrain = "water"]
+    let target-patches neighbors with [patchtype = "sea"]
+    ifelse any? target-patches [
+      move-to one-of target-patches ; Move to a patch with higher spawning quality
+    ] [
+      ifelse any? neighbor-patches [
+        move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+      ] [
+      ]
+    ]
+    
+  ]
+ 
+;   if night? = false and monthnum = 7 or monthnum = 8
+;  ;migration movement for overwintering juvenile and migrating adults
+;  ;move to nearest neighbor with higherer HSI and with patchtype = myself
+;  [
+;    let neighbor-patches neighbors with [patch-terrain = "water"]
+;    let target-patches neighbors with [patchtype = "pond" or patchtype = "estuary" and spawning-habitat-quality < [spawning-habitat-quality] of myself]
+;    ifelse any? target-patches [
+;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;    ] [
+;      ifelse any? neighbor-patches [
+;        move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;      ] [
+;       ;bk 2; If there are no neighbor patches, back up; If there are no neighbor patches, do nothing (or any other behavior you want)
+;      ]
+;    ]
+;    ;if patch-terrain = "water" [move-to one-of neighbors] ;prevents fish from getting stuck in between patches
+;    ] 
+  
+;  ;;;Adult Alewife non-migratory Movement
+;  if monthnum > migration-end-month or day < migration-start-day and spawning-encounters < limit-alewife-spawning-encounters; without a fullmoon there is only 30% chance of direct outward-migration
+;  ;migration movement for overwintering juvenile and migrating adults
+;  ;move to nearest neighbor with higherer HSI and with patchtype = myself
+;  [
+;  set better-patches neighbors with [patchtype = "sea" or pycor > [pycor] of myself] ;move out of pond to sea
+;    ;if any? better-patches [ask better-patches [set pcolor yellow]] ;troubleshooting step
+;ifelse any? better-patches [ ;if any better patches exist move to better patch
+;  move-to one-of better-patches ; print (word "Month " month " day " day " hour " hour) ]
+;] [
+;  ; if no patches exist
+;  ]
+;    kill-adult-fish-seasonally ;kill fish left in the ponds outside of migration period
+;  ]
+end
+;
+
+;to move-adults-based-on-night
+;  if night? = true [
+;    migrate-alewives-in
+;  ]
+;  
+;  if night? = false [
+;    let neighbor-patches neighbors with [patch-terrain = "water" ]
+;    let target-patches neighbors with [spawning-habitat-quality > [spawning-habitat-quality] of myself]
+;    ifelse any? target-patches [
+;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;    ] [
+;      ifelse any? neighbor-patches [
+;        move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;      ] [
+;        ; If there are no neighbor patches, do nothing (or any other behavior you want)
+;      ]
+;    ]
+;  ]
+;end
+;

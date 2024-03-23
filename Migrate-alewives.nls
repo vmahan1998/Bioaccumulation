@@ -1,0 +1,306 @@
+to migrate-alewives-in
+  if age = "adult" and patch-terrain = "water"[
+   ; Check if the agent's patch has the desired patchtype
+;    if patchtype = "sea" or patchtype = "menemsha" [
+;  if xcor = min-pxcor-of-water-channel or xcor = max-pxcor-of-water-channel[
+;      let target-xcor (min-pxcor-of-water-channel + max-pxcor-of-water-channel) / 2
+;      let target-ycor (pycor + 1)  ; Move slightly upward to avoid getting stuck
+;      
+;      let target-heading atan (target-xcor - xcor) (target-ycor - ycor)
+;      set heading target-heading
+;      fd 1  ; Move forward towards the target point
+;    ]
+;    ]
+; if ycor > 180 [
+;  let target-xcor 150
+;  let target-ycor 95
+;  ifelse (target-xcor - xcor) != 0 or (target-ycor - ycor) != 0 [
+;      let target-heading atan (target-xcor - xcor) (target-ycor - ycor)  ; Calculate the heading towards the target point
+;        set heading target-heading  ; Turn the turtle to face the target point
+;    ] [
+;      ; If both inputs are zero, don't change heading
+;    ]
+;  fd 1 ; Move forward towards the target point
+;  ]
+;  
+;   if ycor > 130 [
+;  let target-xcor (min-pxcor-of-water-channel + max-pxcor-of-water-channel) / 2
+;  let target-ycor 130
+;  let target-heading atan (target-xcor - xcor) (target-ycor - ycor)  ; Calculate the heading towards the target point
+;  set heading target-heading  ; Turn the turtle to face the target point
+;  fd 1 ; Move forward towards the target point
+;  ]
+;  
+;  if ycor <= 130 and ycor > 95 [  ; Check if the ycor is between 147 & 93
+;  let target-xcor 89
+;  let target-ycor 95
+;  ifelse (target-xcor - xcor) != 0 or (target-ycor - ycor) != 0 [
+;      let target-heading atan (target-xcor - xcor) (target-ycor - ycor)  ; Calculate the heading towards the target point
+;        set heading target-heading  ; Turn the turtle to face the target point
+;    ] [
+;      ; If both inputs are zero, don't change heading
+;    ]
+;   fd 1 ; Move forward towards the target point
+;  ]
+    if ycor > 160 [
+      move-into-estuary
+  ]
+    
+    if ycor <= 160 and ycor > 95 [
+      find-entrance-herringrun
+  ]
+    
+;    if ycor <= 95 and ycor > 85 [
+;    let neighbor-patches neighbors with [patchtype = "herringrun" or patch-terrain = "water"]
+;    let target-patches neighbors with [spawning-habitat-quality > [spawning-habitat-quality] of myself]
+;    set speed 4
+;    if any? target-patches [
+;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;      ]
+;      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;    ]
+;    
+
+    
+    if ycor <= 95 and ycor > 83 and night? = true and tide? = true [
+    let neighbor-patches neighbors with [patch-terrain = "water"]
+    let target-patches neighbors with [patchtype = "herringrun" or patchtype = "squibnocket" and spawning-habitat-quality > [spawning-habitat-quality] of myself]
+    ifelse any? target-patches [
+      move-to one-of target-patches ; Move to a patch with higher spawning quality
+      ifelse patchtype = "herringrun" ; Check if alewife is in the desired patch type
+      [ set speed 4.0 ] ; If yes, set speed to a higher value (e.g., 2.0)
+      [ set speed 0.5 ] ; If no, set speed back to the default value (e.g., 1.0)
+    ] [
+      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+      ifelse patchtype = "herringrun" ; Check if alewife is in the desired patch type
+      [ set speed 4.0 ] ; If yes, set speed to a higher value (e.g., 2.0)
+      [ set speed 0.5 ] ; If no, set speed back to the default value (e.g., 1.0)
+    ]
+  ]
+    
+    if ycor <= 95 and ycor > 83 and night? = true and random-float 1 <= 0.1 [
+    let neighbor-patches neighbors with [patch-terrain = "water"]
+    let target-patches neighbors with [patchtype = "herringrun" or patchtype = "squibnocket" and spawning-habitat-quality > [spawning-habitat-quality] of myself]
+    ifelse any? target-patches [
+      move-to one-of target-patches ; Move to a patch with higher spawning quality
+      ifelse patchtype = "herringrun" ; Check if alewife is in the desired patch type
+      [ set speed 4.0 ] ; If yes, set speed to a higher value (e.g., 2.0)
+      [ set speed 0.5 ] ; If no, set speed back to the default value (e.g., 1.0)
+    ] [
+      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+      ifelse patchtype = "herringrun" ; Check if alewife is in the desired patch type
+      [ set speed 4.0 ] ; If yes, set speed to a higher value (e.g., 2.0)
+      [ set speed 0.5 ] ; If no, set speed back to the default value (e.g., 1.0)
+    ]
+  ]
+]
+end
+
+to migrate-alewives-out
+  if age = "adult" and patch-terrain = "water"[
+  if ycor >= 185 [
+  let target-xcor (min-pxcor-of-water-channel + max-pxcor-of-water-channel) / 2
+  let target-ycor 200
+  ifelse (target-xcor - xcor) != 0 or (target-ycor - ycor) != 0 [
+      let target-heading atan (target-xcor - xcor) (target-ycor - ycor)  ; Calculate the heading towards the target point
+        set heading target-heading  ; Turn the turtle to face the target point
+    ] [
+      ; If both inputs are zero, don't change heading
+    ]
+  fd 1 ; Move forward towards the target point
+  ]
+  
+   if ycor < 150 [
+  let target-xcor (min-pxcor-of-water-channel + max-pxcor-of-water-channel) / 2
+  let target-ycor 195
+  ifelse (target-xcor - xcor) != 0 or (target-ycor - ycor) != 0 [
+      let target-heading atan (target-xcor - xcor) (target-ycor - ycor)  ; Calculate the heading towards the target point
+        set heading target-heading  ; Turn the turtle to face the target point
+    ] [
+      ; If both inputs are zero, don't change heading
+    ]
+  fd 1 ; Move forward towards the target point
+  ]
+  
+  if ycor <= 130 and ycor > 90 [  ; Check if the ycor is between 147 & 93
+  let target-xcor 145
+  let target-ycor 145
+      ifelse (target-xcor - xcor) != 0 or (target-ycor - ycor) != 0 [
+      let target-heading atan (target-xcor - xcor) (target-ycor - ycor)  ; Calculate the heading towards the target point
+        set heading target-heading  ; Turn the turtle to face the target point
+    ] [
+      ; If both inputs are zero, don't change heading
+    ]
+  fd 1 ; Move forward towards the target point
+  ]
+
+   if ycor <= 95 and ycor >= 83 and patch-terrain = "water" [
+    let neighbor-patches neighbors with [patchtype = "herringrun" or patch-terrain = "water"]
+    let target-patches neighbors with [salinity < [salinity] of myself]
+    set speed 4
+    if any? target-patches [
+      move-to one-of target-patches ; Move to a patch with higher spawning quality
+      ]
+      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+    ]
+    
+    if ycor < 83 [  ; Check if the ycor is between 147 & 93
+  let target-xcor 83
+  let target-ycor 83
+      ifelse (target-xcor - xcor) != 0 or (target-ycor - ycor) != 0 [
+      let target-heading atan (target-xcor - xcor) (target-ycor - ycor)  ; Calculate the heading towards the target point
+        set heading target-heading  ; Turn the turtle to face the target point
+    ] [
+      ; If both inputs are zero, don't change heading
+    ]
+  fd 1 ; Move forward towards the target point
+  ]
+  ]
+end
+
+;to migrate-alewives-out
+;  return-home
+;;  if ycor <= 50 [
+;;  uphill salinity
+;;  ifelse alewives-moved? [
+;;  ; Do something if alewives have moved
+;;  ] [
+;;    let neighbor-patches neighbors with [patch-terrain = "water"]
+;;    let target-patches neighbors with [spawning-habitat-quality < [spawning-habitat-quality] of myself]
+;;    if any? target-patches [
+;;      move-to one-of target-patches ; Move to a patch with higher spawning quality
+;;      ]
+;;      move-to one-of neighbor-patches ; If no better patches, move to a random neighbor in water
+;;    ]
+;;  ]
+;;;    if ycor <= 50 [
+;;;    move-out-herringrun
+;;;  ]
+;;;  
+;;    if ycor > 50 [
+;;    find-exit-herringrun
+;;  ]
+;;  
+;;  
+;;;  
+;;    if ycor > 70 [
+;;    find-entrance-herringrun
+;;  ]
+;;  
+;; if ycor < 200 [
+;;    move-into-estuary
+;;    return-to-sea
+;;  ]
+;end
+
+to move-into-estuary
+  ; Initialize a variable to track if the agent has reached its home
+  let entrance-patch patch 150 160; Store the entrance to estuary patch
+  let target-heading towards entrance-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance entrance-patch]
+  
+  ; If a closest water patch is found, move to it
+  if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  
+  ; Move forward
+  move-to closest-water-patch
+  ]
+  
+end
+
+to find-entrance-herringrun
+  ; Initialize a variable to track if the agent has reached its home
+  let herringrun-entrance-patch patch 89 94; Store the entrance to estuary patch
+  let target-heading towards herringrun-entrance-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance herringrun-entrance-patch]
+
+  ; If a closest water patch is found, move to it
+    if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  ; Move forward
+    move-to closest-water-patch
+  ]
+end
+to return-home
+  ; Calculate the heading towards the home patch
+  let sea-patch [home-patch] of self
+  let target-heading towards sea-patch
+  
+  
+  ; Find the closest water patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance sea-patch]
+  
+  ; If a closest water patch is found, move to it
+  if closest-water-patch != nobody [
+    ; Set the heading to move towards home
+    set heading target-heading
+    
+    ; Move forward
+    move-to closest-water-patch
+  ]
+end
+
+to move-out-herringrun
+  let target-x 85
+  let target-y 83
+  
+  if xcor != target-x or ycor != target-y [
+  ; Initialize a variable to track if the agent has reached its home
+  let exit-patch patch 85 80; Store the exit to estuary patch
+  let target-heading towards exit-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance exit-patch]
+  
+  ; If a closest water patch is found, move to it
+  if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  
+  ; Move forward
+  move-to closest-water-patch
+  ] ; Move forward in the calculated direction
+]
+  
+end
+
+to find-exit-herringrun
+   let target-x 85
+  let target-y 75
+  
+  if xcor != target-x or ycor != target-y [
+  ; Initialize a variable to track if the agent has reached its home
+  let herringrun-exit-patch patch 80 82; Store the entrance to estuary patch
+  let target-heading towards herringrun-exit-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance herringrun-exit-patch]
+
+  ; If a closest water patch is found, move to it
+    if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  ; Move forward
+    move-to closest-water-patch
+  ]
+  ]
+end
+
+to return-to-sea
+   ; Initialize a variable to track if the agent has reached its home
+  let estuary-exit-patch patch 147 195 ; Store the entrance to estuary patch
+  let target-heading towards estuary-exit-patch
+  let closest-water-patch min-one-of neighbors with [patch-terrain = "water"] [distance estuary-exit-patch]
+
+  ; If a closest water patch is found, move to it
+    if closest-water-patch != nobody [
+  ; Set the heading to move towards the entrance
+  set heading target-heading
+  ; Move forward
+    move-to closest-water-patch
+  ]
+end
+
+to count-alewives-in-herring-run
+  set alewives-through-herring-run count alewives with [patchtype = "herringrun" and pycor <= 92]
+
+end

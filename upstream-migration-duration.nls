@@ -1,0 +1,7 @@
+to track-time-of-upstream-migration
+    if day >= migration-start-day and monthnum < 7 and patchtype != "pond" [
+      set upstream-migration-time upstream-migration-time + 1
+      ; Print the updated value for debugging
+    ]
+end
+

@@ -1,0 +1,9 @@
+to avoid-run
+    ifelse patchtype = "herringrun" [
+    let target-patches neighbors with [pycor < [pycor] of myself and patch-terrain = "water" or patchtype = "squibnocket"]
+      move-to one-of target-patches
+  ]
+  [bk 1]
+
+  
+end

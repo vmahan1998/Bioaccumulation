@@ -1,0 +1,42 @@
+to prototype-setup
+  clear-all
+  
+  ; Set up the world for a channel
+  resize-world 0 Channel-Width 0 400
+  set-patch-size 1
+  
+  if model-type = "prototype" [
+    ask patches [
+      set pcolor blue
+      set spawning-habitat-quality 0
+      set patch-terrain "water"
+      set prey-eaten-in-patch 0
+      set spawning-events-in-patch 0
+      if pycor >= 390 [
+        set patchtype "estuary"
+        set methylmercury 3
+        set spawning-habitat-quality random-float 0.2 ; HSI values between 0-0.2
+      ] 
+      if pycor < 390 and pycor > 10 [
+        set patchtype "channel"
+        set methylmercury 5
+        set spawning-habitat-quality random-float 0.3 + 0.2 ; HSI values between 0.4-1.0
+      ]
+      if pycor <= 10 [
+        set patchtype "pond"
+        set methylmercury 0
+        set spawning-habitat-quality random-float 0.6 + 0.4 ; HSI values between 0.4-1.0
+      ]
+      
+      ; Additional conditions or modifications can be added here
+      
+    ]
+  ]
+end
+
+to prototype-parameters
+  set hour 22 
+  set day migration-start-day 
+  set month "April" 
+  set monthnum 4
+end

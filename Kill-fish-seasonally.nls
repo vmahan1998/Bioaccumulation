@@ -1,0 +1,6 @@
+to kill-adult-fish-seasonally
+  if age = "adult" and ycor < 185 [
+    die ; Kill the fish
+    set numAlewivesKilled-Seasonally numAlewivesKilled-Seasonally + 1
+  ]
+end
